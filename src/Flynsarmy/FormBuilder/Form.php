@@ -14,6 +14,11 @@ class Form
 	protected $fields = array();
 	protected $builder;
 
+	/**
+	 * Create a new Form
+	 *
+	 * @param FormBuilder $builder
+	 */
 	public function __construct(FormBuilder $builder)
 	{
 		$this->builder = $builder;

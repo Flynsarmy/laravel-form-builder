@@ -14,8 +14,8 @@ class Field
 	/**
 	 * Creates a new form field.
 	 *
-	 * @param Form   $form Form this field belongs to
-	 * @param [type] $id   Unique identifier for the field
+	 * @param FormBuilder $builder
+	 * @param string      $id      Unique identifier for the field
 	 */
 	public function __construct(FormBuilder $builder, $id)
 	{
