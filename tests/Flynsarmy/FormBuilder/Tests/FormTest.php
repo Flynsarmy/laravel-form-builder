@@ -15,7 +15,10 @@ class FormTest extends TestCase
 
 	public function setUp()
 	{
-		$this->form = new Form;
+		parent::setUp();
+
+		$builder = $this->app->make('form');
+		$this->form = new Form($builder);
 		// $this->field = Mockery::namedMock('Field', 'Flynsarmy\FormBuilder\Field');
 	}
 

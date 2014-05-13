@@ -33,6 +33,9 @@ Create a form, add fields, render.
 
 ```php
 $form = FormBuilder::form();
+// Or without the facade:
+// $builder = App::make('form');
+// $form = new Flynsarmy\FormBuilder\Form($builder);
 
 //$form->add('<unique identifier>')->type('<Same as Form::$type facade>')->with('<any args required by Form::$type facade>');
 $form->add('first_name')->type('text')->with('first_name');

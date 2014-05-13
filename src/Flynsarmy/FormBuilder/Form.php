@@ -1,6 +1,7 @@
 <?php namespace Flynsarmy\FormBuilder;
 
 use Closure;
+use Illuminate\Html\FormBuilder;
 use Flynsarmy\FormBuilder\Field;
 use Flynsarmy\FormBuilder\Exceptions\FieldAlreadyExists;
 use Flynsarmy\FormBuilder\Exceptions\FieldNotFound;
@@ -11,6 +12,12 @@ class Form
 	use Traits\Bindable;
 
 	protected $fields = array();
+	protected $builder;
+
+	public function __construct(FormBuilder $builder)
+	{
+		$this->builder = $builder;
+	}
 
 	/**
 	 * Add a new field to the form
@@ -84,7 +91,7 @@ class Form
 	 */
 	protected function addAtPosition($position, $id, $callback = null)
 	{
-		$field = new Field($id);
+		$field = new Field($this->builder, $id);
 		$this->fields = ArrayHelper::insert($this->fields, [$id => $field], $position);
 
 		if ( $callback instanceof Closure )
@@ -139,7 +146,7 @@ class Form
 		// Are we using a tabbed interface?
 		$tabs = $this->getFieldsBySetting('tab', '');
 
-		$output .= $this->fire('beforeForm', $form, $tabs);
+		$output .= $this->fire('beforeForm', $this, $tabs);
 
 		// Render a tabless form
 		if ( sizeof($tabs) == 1 )
@@ -152,7 +159,7 @@ class Form
 				$output .= $this->renderFields($fields);
 		}
 
-		$output .= $this->fire('afterForm', $form, $tabs);
+		$output .= $this->fire('afterForm', $this, $tabs);
 
 		return $output;
 	}
@@ -216,9 +223,9 @@ class Form
 	protected function renderField(Field $field)
 	{
 		$output = '';
-		$output .= $this->fire('beforeField', $form, $field);
+		$output .= $this->fire('beforeField', $this, $field);
 		$output .= $field->render();
-		$output .= $this->fire('afterField', $form, $field);
+		$output .= $this->fire('afterField', $this, $field);
 
 		return $output;
 	}

@@ -1,9 +1,11 @@
 <?php namespace Flynsarmy\FormBuilder;
 
+use Illuminate\Html\FormBuilder;
 use Flynsarmy\FormBuilder\Exceptions\UnknownType;
 
 class Field
 {
+	protected $builder;
 	protected $id;
 	protected $type;
 	protected $args = array();
@@ -15,8 +17,9 @@ class Field
 	 * @param Form   $form Form this field belongs to
 	 * @param [type] $id   Unique identifier for the field
 	 */
-	public function __construct($id)
+	public function __construct(FormBuilder $builder, $id)
 	{
+		$this->builder = $builder;
 		$this->id = $id;
 	}
 
@@ -59,7 +62,7 @@ class Field
 		if ( !$this->type )
 			throw new UnknownType("You must set a field type for field '".$this->id."'.");
 
-		return forward_static_call_array(array('Form', $this->type), $this->args);
+		return call_user_func_array([$this->builder, $this->type], $this->args);
 	}
 
 	/**

@@ -1,10 +1,17 @@
 <?php namespace Flynsarmy\FormBuilder;
 
 use Closure;
+use Illuminate\Html\FormBuilder;
 
 class FormBuilderManager
 {
 	use Traits\Bindable;
+	protected $builder;
+
+	public function __construct(FormBuilder $builder)
+	{
+		$this->builder = $builder;
+	}
 
 	/**
 	 * Create a new Form
@@ -15,10 +22,10 @@ class FormBuilderManager
 	 */
 	public function form($callback = null)
 	{
-		$form = new Form();
+		$form = new Form($this->builder);
 
-		foreach ( $this->bindables as $event => $bindable_callback )
-			$form->bind($event, $bindable_callback);
+		foreach ( $this->bindings as $event => $binding_callback )
+			$form->bind($event, $binding_callback);
 
 		if ( $callback instanceof Closure )
 			call_user_func($callback, $form);

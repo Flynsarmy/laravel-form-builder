@@ -18,7 +18,11 @@ class FormBuilderServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app->bind('formbuilder', 'Flynsarmy\FormBuilder\FormBuilderManager');
+		$this->app->bind('formbuilder', function() {
+			return new \Flynsarmy\FormBuilder\FormBuilderManager(
+				$this->app->make('form')
+			);
+		});
 	}
 
 	/**
