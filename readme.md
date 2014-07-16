@@ -140,7 +140,7 @@ or using the optional facade, a global basis
 ```php
 // Global form callbacks
 FormBuilder::bind('beforeField', function(Form $form, Field $field) {
-		return '<div><label>'.$field->label.': </label>';
+		return '<div><label for="'.$field->id.'">'.$field->label.': </label>';
 	})
 	->bind('afterField', function(Form $form, Field $field) {
 		return '</div>';
@@ -160,12 +160,17 @@ FormBuilder::form(function(Form $form) {
 // Add labels and help blocks to fields
 FormBuilder::
 	bind('beforeField', function($form, $field) {
-		return '<div class="form-group"><label>'.$field->label.'</label>';
+		return '<div class="form-group"><label for="'.$field->id.'">'.$field->label.'</label>';
 	})
 	->bind('afterField', function($form, $field) {
 		$output = '';
 		if ( $field->description )
 			$output .= '<p class="help-block">' . $field->description . '</p>';
+		
+		$errors = $field->errors;
+		if ($errors !== null)
+			$output .= $errors->first($field->id, '<span class="help-inline text-danger">:message</span>');
+		
 		return $output . '</div>';
 	});
 
