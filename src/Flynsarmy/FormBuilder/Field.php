@@ -68,7 +68,8 @@ class Field
 	/**
 	 * Return a setting if it exists
 	 *
-	 * @param  string $name 'id', 'type', 'settings' or previously entered setting.
+	 * @param  string $name 'id', 'type', 'settings' or 'errors' or previously entered setting.
+	 * 				'errors' returns validation error messages when existing
 	 *
 	 * @return mixed      Setting value or null if not found.
 	 */
@@ -77,6 +78,9 @@ class Field
 		if ( in_array($name, array('id', 'type', 'settings')) )
 			return $this->$name;
 
+		if ( in_array($name, array('errors')) )
+			return $this->builder->getSessionStore()->get('errors');
+			
 		if ( isset($this->settings[$name]) )
 			return $this->settings[$name];
 
