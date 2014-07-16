@@ -152,17 +152,17 @@ FormBuilder::form(function(Form $form) {
 ```
 
 
-### Exxamples
+### Examples
 
 #### Twitter Bootstrap Integration
 
 ```php
 // Add labels and help blocks to fields
 FormBuilder::
-	bind('beforeField', function($field) {
+	bind('beforeField', function($form, $field) {
 		return '<div class="form-group"><label>'.$field->label.'</label>';
 	})
-	->bind('afterField', function($field) {
+	->bind('afterField', function($form, $field) {
 		$output = '';
 		if ( $field->description )
 			$output .= '<p class="help-block">' . $field->description . '</p>';
